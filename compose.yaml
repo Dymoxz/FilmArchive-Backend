@@ -1,0 +1,13 @@
+services:
+  film-archive-api:
+    build: .
+    container_name: film-archive-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - SCANS_DIR=/data/scans
+      - APPDATA_DIR=/data/appdata
+    volumes:
+      - /mnt/smb/filmscans:/data/scans:ro
+      - ./appdata:/data/appdata
