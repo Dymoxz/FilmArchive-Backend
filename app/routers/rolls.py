@@ -13,7 +13,20 @@ from app.schemas import FrameResponse, RollDetailResponse, RollSummaryResponse
 
 router = APIRouter(prefix="/api/rolls", tags=["Rolls"])
 
-CACHE_HEADERS = {"Cache-Control": "public, max-age=86400"}
+CACHE_HEADERS = {"Cache-Control": "no-cache"}
+
+
+def _cover_url_with_version(roll: Roll) -> str:
+    cover_path = (
+        Path(roll.cover_image_path)
+        if roll.cover_image_path
+        else settings.covers_dir / f"{roll.id}.webp"
+    )
+    try:
+        mtime_ns = cover_path.stat().st_mtime_ns
+        return f"/api/rolls/{roll.id}/cover?v={mtime_ns}"
+    except OSError:
+        return f"/api/rolls/{roll.id}/cover"
 
 
 @router.get("", response_model=list[RollSummaryResponse])
@@ -71,7 +84,7 @@ def list_rolls(
             expected_frames=roll.expected_frames,
             actual_frames_count=len(roll.frames),
             location_tags=roll.location_tags or [],
-            cover_url=f"/api/rolls/{roll.id}/cover",
+            cover_url=_cover_url_with_version(roll),
         )
         for roll in rolls
     ]
@@ -110,7 +123,7 @@ def get_roll_detail(
         date_added=roll.date_added,
         expected_frames=roll.expected_frames,
         location_tags=roll.location_tags or [],
-        cover_url=f"/api/rolls/{roll.id}/cover",
+        cover_url=_cover_url_with_version(roll),
         frames=[
             FrameResponse(
                 id=frame.id,
