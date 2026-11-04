@@ -97,3 +97,8 @@ class SyncSummaryResponse(BaseModel):
     rolls_processed: int
     frames_processed: int
     errors: list[str] = Field(default_factory=list)
+
+
+class ArchiveStatsResponse(BaseModel):
+    total_rolls: int
+    total_frames: int

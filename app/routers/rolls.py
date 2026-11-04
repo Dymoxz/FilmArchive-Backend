@@ -3,13 +3,18 @@ from typing import Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import FileResponse
-from sqlalchemy import asc, desc, select
+from sqlalchemy import asc, desc, func, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.config import settings
 from app.database import get_db
-from app.models import FilmFormat, Roll
-from app.schemas import FrameResponse, RollDetailResponse, RollSummaryResponse
+from app.models import FilmFormat, Frame, Roll
+from app.schemas import (
+    ArchiveStatsResponse,
+    FrameResponse,
+    RollDetailResponse,
+    RollSummaryResponse,
+)
 
 router = APIRouter(prefix="/api/rolls", tags=["Rolls"])
 
@@ -88,6 +93,25 @@ def list_rolls(
         )
         for roll in rolls
     ]
+
+
+@router.get("/stats", response_model=ArchiveStatsResponse)
+def get_archive_stats(
+    format: Optional[FilmFormat] = Query(
+        default=None,
+        description="Optional film format filter for stats",
+    ),
+    db: Session = Depends(get_db),
+) -> ArchiveStatsResponse:
+    rolls_stmt = select(func.count(Roll.id))
+    frames_stmt = select(func.count(Frame.id)).join(Roll, Frame.roll_id == Roll.id)
+    if format is not None:
+        rolls_stmt = rolls_stmt.where(Roll.film_format == format)
+        frames_stmt = frames_stmt.where(Roll.film_format == format)
+
+    total_rolls = db.scalar(rolls_stmt) or 0
+    total_frames = db.scalar(frames_stmt) or 0
+    return ArchiveStatsResponse(total_rolls=total_rolls, total_frames=total_frames)
 
 
 @router.get("/{roll_id}", response_model=RollDetailResponse)
