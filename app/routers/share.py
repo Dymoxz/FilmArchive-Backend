@@ -274,73 +274,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
   .page-shell {{
     max-width: 920px;
     margin: 0 auto;
-    padding: 16px 16px 48px;
-  }}
-
-  /* Sticky Collapsed Top Pill Bar */
-  .top-bar {{
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(0, 0, 0, 0.86);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    margin: -8px -16px 8px;
-    padding: 0 16px;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s ease;
-  }}
-  .top-bar.scrolled {{
-    border-bottom-color: var(--outline-variant);
-  }}
-  .brand-pill {{
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    height: 34px;
-    padding: 0 13px;
-    border-radius: 999px;
-    background: var(--surface-low);
-    border: 1px solid var(--outline-variant);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--on-surface-variant);
-  }}
-  .brand-Sprocket {{
-    width: 12px;
-    height: 12px;
-    color: var(--primary);
-  }}
-  .collapsed-title {{
-    opacity: 0;
-    transform: translateY(8px);
-    pointer-events: none;
-    transition: opacity 0.22s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1);
-    height: 34px;
-    padding: 0 14px;
-    border-radius: 999px;
-    background: var(--surface-high);
-    border: 1px solid var(--outline);
-    display: inline-flex;
-    align-items: center;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--on-surface);
-    max-width: 55vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }}
-  .top-bar.scrolled .collapsed-title {{
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+    padding: 20px 16px 48px;
   }}
 
   /* Roll Metadata Header (Mirrors RollMetadataHeader.kt) */
@@ -623,21 +557,18 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     transform: scale(0.92);
   }}
   .lightbox-counter {{
-    height: 32px;
-    padding: 0 14px;
+    height: 36px;
+    padding: 0 16px;
     border-radius: 999px;
     background: var(--surface-low);
     border: 1px solid var(--outline-variant);
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 700;
     color: var(--on-surface);
-  }}
-  .lightbox-counter span.accent {{
-    color: var(--primary);
   }}
 
   .lightbox-stage {{
@@ -661,48 +592,37 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
   }}
 
   .nav-arrow {{
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background: rgba(29, 29, 34, 0.82);
+    background: var(--surface-high);
     border: 1px solid var(--outline);
     color: var(--on-surface);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 3;
-    transition: opacity 0.15s ease, border-color 0.15s ease;
+    transition: opacity 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
   }}
   .nav-arrow:hover {{
     border-color: var(--primary);
   }}
-  .nav-arrow.prev {{ left: 16px; }}
-  .nav-arrow.next {{ right: 16px; }}
-  @media (max-width: 640px) {{
-    .nav-arrow {{
-      width: 38px;
-      height: 38px;
-    }}
-    .nav-arrow.prev {{ left: 8px; }}
-    .nav-arrow.next {{ right: 8px; }}
+  .nav-arrow:active {{
+    transform: scale(0.92);
   }}
 
   .lightbox-bottom {{
-    height: 60px;
+    height: 68px;
     padding: 0 16px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
     z-index: 2;
   }}
   .download-pill {{
     height: 38px;
-    padding: 0 16px;
+    padding: 0 15px;
     border-radius: 999px;
     background: var(--surface-high);
     border: 1px solid var(--outline);
@@ -710,7 +630,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 11.5px;
     font-weight: 700;
@@ -732,18 +652,6 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
 </head>
 <body>
   <div class="page-shell">
-    <!-- Top Bar -->
-    <header class="top-bar" id="topBar">
-      <div class="brand-pill">
-        <svg class="brand-Sprocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <rect x="3" y="5" width="18" height="14" rx="2.5"/>
-          <rect x="6.5" y="8" width="11" height="8" rx="1"/>
-        </svg>
-        <span>FILM ARCHIVE</span>
-      </div>
-      <div class="collapsed-title">{title_escaped}</div>
-    </header>
-
     <!-- Editorial Metadata Header -->
     <section class="metadata-header">
       <div class="eyebrow-row">
@@ -791,23 +699,30 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
         </svg>
       </button>
 
-      <div class="lightbox-counter">
-        <span class="accent" id="lbFrameNum">#01</span>
-        <span>•</span>
-        <span id="lbIndexText">1 / {len(sorted_frames)}</span>
-      </div>
-
-      <div style="width:40px"></div>
+      <a class="download-pill" id="downloadBtn" href="#" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>DOWNLOAD</span>
+      </a>
     </div>
 
     <div class="lightbox-stage" id="lightboxStage">
+      <img class="lightbox-img" id="lightboxImg" alt="" src="">
+    </div>
+
+    <div class="lightbox-bottom">
       <button type="button" class="nav-arrow prev" id="prevBtn" aria-label="Previous frame">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M15 18l-6-6 6-6"/>
         </svg>
       </button>
 
-      <img class="lightbox-img" id="lightboxImg" alt="" src="">
+      <div class="lightbox-counter">
+        <span id="lbIndexText">1 / {len(sorted_frames)}</span>
+      </div>
 
       <button type="button" class="nav-arrow next" id="nextBtn" aria-label="Next frame">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -815,33 +730,12 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
         </svg>
       </button>
     </div>
-
-    <div class="lightbox-bottom">
-      <a class="download-pill" id="downloadBtn" href="#" download>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        <span>SAVE FULL RES</span>
-      </a>
-    </div>
   </div>
 
 <script>
   const FRAMES = {frames_json};
 
-  // 1. Sticky header scroll state
-  const topBar = document.getElementById('topBar');
-  window.addEventListener('scroll', () => {{
-    if (window.scrollY > 110) {{
-      topBar.classList.add('scrolled');
-    }} else {{
-      topBar.classList.remove('scrolled');
-    }}
-  }}, {{ passive: true }});
-
-  // 2. Interactive shoot date pill toggle (matches RollMetadataHeader.kt)
+  // 1. Interactive shoot date pill toggle (matches RollMetadataHeader.kt)
   const datePill = document.getElementById('datePill');
   let dateTimer = null;
   let showingExact = false;
@@ -864,7 +758,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     }});
   }}
 
-  // 3. Build 2-column staggered grid preserving chronological order
+  // 2. Build 2-column staggered grid preserving chronological order
   const colLeft = document.getElementById('colLeft');
   const colRight = document.getElementById('colRight');
 
@@ -898,10 +792,9 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     }}
   }});
 
-  // 4. Fullscreen Lightbox Controller
+  // 3. Fullscreen Lightbox Controller
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
-  const lbFrameNum = document.getElementById('lbFrameNum');
   const lbIndexText = document.getElementById('lbIndexText');
   const downloadBtn = document.getElementById('downloadBtn');
   const closeBtn = document.getElementById('closeLightboxBtn');
@@ -914,8 +807,6 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
   function renderLightboxFrame() {{
     if (activeIndex < 0 || activeIndex >= FRAMES.length) return;
     const item = FRAMES[activeIndex];
-    const paddedNum = String(item.frameNumber).padStart(2, '0');
-    lbFrameNum.textContent = '#' + paddedNum;
     lbIndexText.textContent = (activeIndex + 1) + ' / ' + FRAMES.length;
 
     // Show thumbnail immediately if cached, then swap/load full-res
