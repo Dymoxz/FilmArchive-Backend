@@ -1,10 +1,12 @@
 import json
 import logging
+import random
 import re
 import threading
 from pathlib import Path
 from typing import Optional
 
+from PIL import Image
 from pydantic import ValidationError
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -12,7 +14,12 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.models import Frame, Roll
 from app.schemas import RollMetadataInput, SyncSummaryResponse
-from app.services.imaging import generate_cover_collage, generate_thumbnail
+from app.services.imaging import (
+    COVER_CANVAS_SIZE,
+    COVER_GRID_COUNT,
+    generate_cover_collage,
+    generate_thumbnail,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -226,32 +233,48 @@ def run_sync(db: Session, force_regenerate: bool = False) -> SyncSummaryResponse
                 db.flush()
                 db.refresh(roll)
 
-                # Cover Collage Generation
+                # Cover Collage Generation (4x4 randomly picked from the roll)
                 cover_dest = settings.covers_dir / f"{roll.id}.webp"
+                is_legacy_cover_size = False
+                if cover_dest.is_file():
+                    try:
+                        with Image.open(cover_dest) as existing_cover:
+                            if existing_cover.size != COVER_CANVAS_SIZE:
+                                is_legacy_cover_size = True
+                    except Exception:
+                        is_legacy_cover_size = True
+
                 needs_cover = (
                     force_regenerate
                     or frames_changed
+                    or is_legacy_cover_size
                     or not roll.cover_image_path
                     or not Path(roll.cover_image_path).is_file()
                 )
 
                 if needs_cover:
-                    sorted_frames = sorted(roll.frames, key=lambda fr: fr.frame_number)[:4]
-                    if len(sorted_frames) >= 4:
-                        # Prefer cached thumbnails for the 4-frame 390x390 collage, fallback to full scan
+                    all_frames = list(roll.frames)
+                    if len(all_frames) > COVER_GRID_COUNT:
+                        picked_frames = random.sample(all_frames, COVER_GRID_COUNT)
+                    else:
+                        picked_frames = list(all_frames)
+                        random.shuffle(picked_frames)
+
+                    if len(picked_frames) >= 2:
+                        # Prefer cached thumbnails for the 16-frame 4x4 collage, fallback to full scan
                         collage_sources = [
                             Path(fr.thumb_image_path)
                             if fr.thumb_image_path and Path(fr.thumb_image_path).is_file()
                             else (folder_path / fr.file_name)
-                            for fr in sorted_frames
+                            for fr in picked_frames
                         ]
                     else:
-                        # For 1-3 frames, 800x800 full-bleed cover benefits from source scan resolution
+                        # For a single-frame roll, 1200x1200 full-bleed cover benefits from source scan
                         collage_sources = [
                             (folder_path / fr.file_name)
                             if (folder_path / fr.file_name).is_file()
                             else Path(fr.thumb_image_path)
-                            for fr in sorted_frames
+                            for fr in picked_frames
                             if (folder_path / fr.file_name).is_file()
                             or (fr.thumb_image_path and Path(fr.thumb_image_path).is_file())
                         ]

@@ -1,3 +1,4 @@
+import random
 from collections.abc import Sequence
 from pathlib import Path
 from PIL import Image, ImageOps
@@ -8,10 +9,15 @@ Image.MAX_IMAGE_PIXELS = None
 THUMB_MAX_SIZE = (600, 600)
 THUMB_WEBP_QUALITY = 80
 
-COVER_CANVAS_SIZE = (800, 800)
+COVER_GRID_DIM = 4
+COVER_GRID_COUNT = COVER_GRID_DIM * COVER_GRID_DIM  # 16 tiles (4x4)
+COVER_CANVAS_SIZE = (1200, 1200)
 COVER_BG_COLOR = (18, 18, 18)  # #121212
-COVER_GRID_TILE_SIZE = (390, 390)
-COVER_GRID_GAP = 20
+COVER_GRID_GAP = 12
+COVER_GRID_TILE_SIZE = (
+    (COVER_CANVAS_SIZE[0] - COVER_GRID_GAP * (COVER_GRID_DIM - 1)) // COVER_GRID_DIM,
+    (COVER_CANVAS_SIZE[1] - COVER_GRID_GAP * (COVER_GRID_DIM - 1)) // COVER_GRID_DIM,
+)  # (291, 291) -> 4 * 291 + 3 * 12 = 1200
 COVER_WEBP_QUALITY = 85
 
 
@@ -44,16 +50,26 @@ def generate_cover_collage(image_paths: Sequence[Path], dest_path: Path) -> Path
 
     valid_paths = [p for p in image_paths if p and p.is_file()]
 
-    if len(valid_paths) >= 4:
-        selected = valid_paths[:4]
+    if len(valid_paths) >= 2:
+        if len(valid_paths) >= COVER_GRID_COUNT:
+            selected = random.sample(valid_paths, COVER_GRID_COUNT)
+        else:
+            # Randomly pick from available frames to fill the 4x4 grid
+            selected = []
+            while len(selected) < COVER_GRID_COUNT:
+                batch = list(valid_paths)
+                random.shuffle(batch)
+                selected.extend(batch)
+            selected = selected[:COVER_GRID_COUNT]
+
         tile_w, tile_h = COVER_GRID_TILE_SIZE
-        positions = [
-            (0, 0),
-            (tile_w + COVER_GRID_GAP, 0),
-            (0, tile_h + COVER_GRID_GAP),
-            (tile_w + COVER_GRID_GAP, tile_h + COVER_GRID_GAP),
-        ]
-        for path, pos in zip(selected, positions):
+        for idx, path in enumerate(selected):
+            row = idx // COVER_GRID_DIM
+            col = idx % COVER_GRID_DIM
+            pos = (
+                col * (tile_w + COVER_GRID_GAP),
+                row * (tile_h + COVER_GRID_GAP),
+            )
             img = _load_rgb_image(path)
             cropped = ImageOps.fit(
                 img,
@@ -62,7 +78,7 @@ def generate_cover_collage(image_paths: Sequence[Path], dest_path: Path) -> Path
                 centering=(0.5, 0.5),
             )
             canvas.paste(cropped, pos)
-    elif len(valid_paths) >= 1:
+    elif len(valid_paths) == 1:
         img = _load_rgb_image(valid_paths[0])
         cropped = ImageOps.fit(
             img,
