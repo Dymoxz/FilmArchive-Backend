@@ -464,7 +464,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     border-radius: 14px;
     overflow: hidden;
     background: var(--surface-lowest);
-    border: 0.75px solid var(--outline-variant);
+    border: 0.75px solid rgba(75, 65, 70, 0.38);
     cursor: zoom-in;
     transform: translateZ(0);
     transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.2s ease;
@@ -540,9 +540,9 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--surface-high);
-    border: 1px solid var(--outline);
-    color: var(--on-surface);
+    background: #262224;
+    border: 1px solid #4b4146;
+    color: var(--primary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -560,15 +560,15 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     height: 36px;
     padding: 0 16px;
     border-radius: 999px;
-    background: var(--surface-low);
-    border: 1px solid var(--outline-variant);
+    background: #262224;
+    border: 1px solid #4b4146;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 12.5px;
     font-weight: 700;
-    color: var(--on-surface);
+    color: #f9f6f8;
   }}
 
   .lightbox-stage {{
@@ -595,9 +595,9 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: var(--surface-high);
-    border: 1px solid var(--outline);
-    color: var(--on-surface);
+    background: #262224;
+    border: 1px solid #4b4146;
+    color: var(--primary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -624,9 +624,9 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     height: 38px;
     padding: 0 15px;
     border-radius: 999px;
-    background: var(--surface-high);
-    border: 1px solid var(--outline);
-    color: var(--on-surface);
+    background: #262224;
+    border: 1px solid #4b4146;
+    color: #f9f6f8;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
