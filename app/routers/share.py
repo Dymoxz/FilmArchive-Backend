@@ -72,11 +72,11 @@ def _render_not_found_html() -> str:
 <style>
   :root {
     --bg: #000000;
-    --surface: #141416;
-    --border: #28282C;
-    --text: #F2F0EC;
-    --muted: #9E9B95;
-    --accent: #E5A93C;
+    --surface: #231b20;
+    --border: #6e465e;
+    --text: #f7eef3;
+    --muted: #c9b2c0;
+    --accent: #ebb8d5;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -101,8 +101,8 @@ def _render_not_found_html() -> str:
     display: inline-block;
     padding: 6px 12px;
     border-radius: 999px;
-    background: rgba(229, 169, 60, 0.14);
-    border: 1px solid rgba(229, 169, 60, 0.45);
+    background: rgba(110, 70, 94, 0.32);
+    border: 1px solid #6e465e;
     color: var(--accent);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 11px;
@@ -243,16 +243,16 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
 <style>
   :root {{
     --bg: #000000;
-    --surface-lowest: #0A0A0C;
-    --surface-low: #131316;
-    --surface-high: #1D1D22;
-    --outline: #38383F;
-    --outline-variant: #25252B;
-    --on-bg: #F3F0EA;
-    --on-surface: #ECE9E2;
-    --on-surface-variant: #A29E96;
-    --primary: #E5A93C;
-    --on-primary: #1F1400;
+    --surface-lowest: #140f12;
+    --surface-low: #231b20;
+    --surface-high: #34292f;
+    --outline: #6e465e;
+    --outline-variant: #4a3341;
+    --on-bg: #f7eef3;
+    --on-surface: #f2e6ed;
+    --on-surface-variant: #cdb6c3;
+    --primary: #ebb8d5;
+    --on-primary: #2b1322;
   }}
 
   * {{
@@ -323,7 +323,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     transform: scale(0.96);
   }}
   .date-pill.exact {{
-    border-color: rgba(229, 169, 60, 0.7);
+    border-color: rgba(235, 184, 213, 0.75);
     color: var(--primary);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }}
@@ -367,7 +367,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
   }}
   .spec-chip--highlight {{
     background: var(--surface-high);
-    border-color: rgba(229, 169, 60, 0.45);
+    border-color: #6e465e;
     gap: 6px;
   }}
   .spec-dot {{
@@ -381,7 +381,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 9px;
     font-weight: 700;
-    color: rgba(229, 169, 60, 0.85);
+    color: var(--primary);
     letter-spacing: 0.04em;
   }}
   .spec-val {{
@@ -399,8 +399,8 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     height: 30px;
     padding: 0 12px;
     border-radius: 999px;
-    background: rgba(229, 169, 60, 0.14);
-    border: 1px solid rgba(229, 169, 60, 0.50);
+    background: rgba(110, 70, 94, 0.28);
+    border: 1px solid #6e465e;
     color: var(--primary);
     font-size: 12px;
     font-weight: 600;
@@ -470,7 +470,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.2s ease;
   }}
   .frame-card:hover {{
-    border-color: rgba(229, 169, 60, 0.65);
+    border-color: var(--primary);
   }}
   .frame-card:active {{
     transform: scale(0.96);
@@ -498,7 +498,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.4px;
-    color: rgba(162, 158, 150, 0.75);
+    color: rgba(205, 182, 195, 0.78);
     margin-bottom: 5px;
   }}
   .footer-line-sub {{
@@ -506,7 +506,7 @@ def _render_roll_share_html(request: Request, roll: Roll) -> str:
     font-weight: 500;
     letter-spacing: 0.8px;
     line-height: 15px;
-    color: rgba(162, 158, 150, 0.55);
+    color: rgba(205, 182, 195, 0.56);
   }}
 
   /* Fullscreen Lightbox Viewer */
