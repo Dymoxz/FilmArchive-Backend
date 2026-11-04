@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import Base, engine
-from app.routers import frames, rolls, sync
+from app.routers import frames, rolls, share, sync
 
 logging.basicConfig(
     level=logging.INFO,
@@ -45,3 +45,6 @@ app.include_router(frames.router)
 @app.get("/health", tags=["Health"])
 def health_check() -> dict[str, str]:
     return {"status": "healthy"}
+
+
+app.include_router(share.router)

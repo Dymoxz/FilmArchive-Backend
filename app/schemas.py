@@ -70,6 +70,7 @@ class RollSummaryResponse(BaseModel):
     actual_frames_count: int
     location_tags: list[str]
     cover_url: str
+    share_url: str = ""
 
 
 class RollDetailResponse(BaseModel):
@@ -89,6 +90,7 @@ class RollDetailResponse(BaseModel):
     expected_frames: int
     location_tags: list[str]
     cover_url: str
+    share_url: str = ""
     frames: list[FrameResponse]
 
 

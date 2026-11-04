@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session, selectinload
 from app.config import settings
 from app.database import get_db
 from app.models import FilmFormat, Frame, Roll
+from app.routers.share import compute_share_code
 from app.schemas import (
     ArchiveStatsResponse,
     FrameResponse,
@@ -90,6 +91,7 @@ def list_rolls(
             actual_frames_count=len(roll.frames),
             location_tags=roll.location_tags or [],
             cover_url=_cover_url_with_version(roll),
+            share_url=f"/{compute_share_code(roll)}",
         )
         for roll in rolls
     ]
@@ -148,6 +150,7 @@ def get_roll_detail(
         expected_frames=roll.expected_frames,
         location_tags=roll.location_tags or [],
         cover_url=_cover_url_with_version(roll),
+        share_url=f"/{compute_share_code(roll)}",
         frames=[
             FrameResponse(
                 id=frame.id,
